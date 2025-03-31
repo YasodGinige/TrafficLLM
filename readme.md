@@ -1,4 +1,4 @@
-## TrafficGPT: An LLM Approach for Open-Set Encrypted Traffic Classification
+## TrafficLLM: LLMs for Improved Open-Set Encrypted Traffic Analysis
 
 ![](https://img.shields.io/badge/license-MIT-000000.svg)
 [![arXiv](https://img.shields.io/badge/arXiv-1909.05658-<color>.svg)]()
