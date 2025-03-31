@@ -33,6 +33,13 @@ class Data_Preprocess():
         num_digits = x//50 + 1
         pat = self.create_pattern(num_digits, y)
         return pat
+
+    @staticmethod
+    def preprocess_string(s, model_name):
+        if model_name == 'GPT2':
+            return ' '.join([char for char in s.replace(" ", "")])
+        else:
+            return ''.join([char for char in s.replace(" ", "")])
     
     @staticmethod
     def try_to_hex(x):
@@ -89,7 +96,7 @@ class Data_Preprocess():
         return X_train, y_train, X_valid, y_valid, X_test, y_test
 
     @staticmethod
-    def load_data_CST(input_folder, tgt_dir):
+    def load_data_CST(input_folder, tgt_dir, model_name):
         files = os.listdir(input_folder)
 
         if not os.path.exists(tgt_dir):
@@ -109,6 +116,10 @@ class Data_Preprocess():
                     lt_75_file.write(headers)
                     for line in lines[1:]:
                         label, text_a = line.strip().split('\t')
+                        if model_name == 'GPT2':
+                            text_a = ' '.join([char for char in text_a.replace(" ", "")])
+                        else:
+                            text_a = ''.join([char for char in text_a.replace(" ", "")])
                         if int(label) < 75:
                             lt_75_file.write(label +','+text_a + '\n')
                         else:
@@ -119,7 +130,7 @@ class Data_Preprocess():
             df = pd.DataFrame(Dict)
             df.to_csv(tgt_dir + '/open.csv', index=False)
 
-    def save_csv_DC(self, file_list, save_dir = 'temp_dir/'):
+    def save_csv_DC(self, file_list, save_dir = 'temp_dir/', model_name='GPT2'):
         if not os.path.exists(save_dir):
                 os.makedirs(save_dir)
 
@@ -136,15 +147,22 @@ class Data_Preprocess():
                         bin_string = self.create_bin_flow(num, y)
                         for ll in range(0,len(bin_string),4):
                             val = bin_string[ll:ll+4]
-                            new_flow += self.bin_to_hex(val) + ' '
+                            if model_name == 'GPT2':
+                                new_flow += self.bin_to_hex(val) + ' '
+                            else:
+                                new_flow += self.bin_to_hex(val)
                     else:
-                        new_flow += str(num) + ' '
+                        if model_name == 'GPT2':
+                            new_flow += str(num) + ' '
+                        else:
+                            new_flow += str(num)
+                        
                 new_X.append(new_flow)
 
             df = pd.DataFrame({'text': np.array(new_X), 'target': Y})
             df.to_csv(save_dir + self.name_list[index] + '.csv', index=False)
 
-    def save_csv_AWF(self, file_list, save_dir = 'temp_dir/'):
+    def save_csv_AWF(self, file_list, save_dir = 'temp_dir/', model_name='GPT2'):
         if not os.path.exists(save_dir):
                 os.makedirs(save_dir)
 
@@ -162,7 +180,11 @@ class Data_Preprocess():
                     l = ''.join(x[j:j+2])
                     if j<len(x)-2:
                         if j != len(x)-2:
-                            new_flow += self.try_to_hex(l) + ' ' 
+                            if model_name == 'GPT2':
+                                new_flow += self.try_to_hex(l) + ' '
+                            else:
+                                new_flow += self.try_to_hex(l)
+                             
                         else:
                             new_flow += self.try_to_hex(l) 
                 new_X.append(new_flow)
@@ -172,17 +194,17 @@ class Data_Preprocess():
             del new_X, X, Y
             gc.collect()
 
-    def save_csv_USTC(self, file_list, save_dir = 'temp_dir/'):
+    def save_csv_USTC(self, file_list, save_dir = 'temp_dir/', model_name='GPT2'):
         if not os.path.exists(save_dir):
                 os.makedirs(save_dir)
         for index, (X,Y) in enumerate(file_list):
+            X_processed = np.array([self.preprocess_string(s, model_name) for s in X])
             Y=Y.astype(int)
-
-            df = pd.DataFrame({'text': np.array(X), 'target': Y})
+            df = pd.DataFrame({'text': np.array(X_processed), 'target': Y})
             df.to_csv(save_dir + self.name_list[index] + '.csv', index=False)
 
 
-    def preprocess_dataset(self, data_path, dataset_name):
+    def preprocess_dataset(self, data_path, dataset_name, model_name):
 
         dataset_path = os.path.join(data_path, dataset_name) 
         if dataset_name == 'DC':
@@ -225,7 +247,7 @@ class Data_Preprocess():
             self.open_data = (X_open, y_open)
 
             file_list = [self.train_data, self.valid_data, self.test_data, self.open_data]
-            self.save_csv_DC(file_list, save_dir = 'temp_dir/')
+            self.save_csv_DC(file_list, save_dir = 'temp_dir/', model_name=model_name)
 
         elif dataset_name == 'AWF':
             X_train, y_train, X_valid, y_valid, X_test, y_test = self.load_data_1(dataset_path)
@@ -239,7 +261,7 @@ class Data_Preprocess():
             self.open_data = (X_open, y_open)
 
             file_list = [self.train_data, self.valid_data, self.test_data, self.open_data]
-            self.save_csv_AWF(file_list, save_dir = 'temp_dir/')
+            self.save_csv_AWF(file_list, save_dir = 'temp_dir/', model_name=model_name)
 
         elif dataset_name == 'DF':
             X_train, y_train, X_valid, y_valid, X_test, y_test = self.load_data_2(dataset_path)
@@ -280,10 +302,10 @@ class Data_Preprocess():
             self.open_data = (X_open, y_open)
 
             file_list = [self.train_data, self.valid_data, self.test_data, self.open_data]
-            self.save_csv_AWF(file_list, save_dir = 'temp_dir/')
+            self.save_csv_AWF(file_list, save_dir = 'temp_dir/', model_name=model_name)
 
         elif dataset_name == 'CSTNet':
-            self.load_data_CST(dataset_path, 'temp_dir/')
+            self.load_data_CST(dataset_path, 'temp_dir/', model_name = model_name)
 
         elif dataset_name == 'USTC':
             X_train, y_train, X_valid, y_valid, X_test, y_test = self.load_data_1(dataset_path)
@@ -325,7 +347,7 @@ class Data_Preprocess():
             self.open_data = (X_open, y_open)
 
             file_list = [self.train_data, self.valid_data, self.test_data, self.open_data]
-            self.save_csv_USTC(file_list, save_dir = 'temp_dir/')
+            self.save_csv_USTC(file_list, save_dir = 'temp_dir/', model_name = model_name)
 
 
 

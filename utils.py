@@ -7,12 +7,12 @@ from sklearn.utils import shuffle
 from sklearn.model_selection import train_test_split
 import _pickle as cPickle
 import gc
+from torch.optim import AdamW
 from transformers import (set_seed,
                           TrainingArguments,
                           Trainer,
                           GPT2Config,
-                          GPT2Tokenizer,
-                          AdamW, 
+                          GPT2Tokenizer, 
                           get_linear_schedule_with_warmup,
                           GPT2ForSequenceClassification)
 

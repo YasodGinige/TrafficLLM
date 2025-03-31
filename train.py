@@ -5,17 +5,19 @@ from tqdm.auto import tqdm
 import os
 import random
 import gc
+
 import torch
 import torch.nn as nn
 from torch.utils.data import Dataset, DataLoader
 from sklearn.metrics import classification_report, accuracy_score
 from utils import DatasetCreator, GPT2_collator
+
+from torch.optim import AdamW
 from transformers import (set_seed,
                           TrainingArguments,
                           Trainer,
                           GPT2Config,
-                          GPT2Tokenizer,
-                          AdamW, 
+                          GPT2Tokenizer, 
                           get_linear_schedule_with_warmup,
                           GPT2ForSequenceClassification)
 
