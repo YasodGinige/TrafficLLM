@@ -12,7 +12,7 @@
     <img src="/Images/models.png" width="850" height="450" alt="overall architecure"/>
 </div>
 
-In this repository, we guide you in setting up the TrafficGPT project in a local environment and reproducing the results. TrafficGPT, a novel traffic analysis attack that leverages GPT-2, a popular LLM, to enhance feature extraction, thereby improving
+In this repository, we guide you in setting up the TrafficLLM project in a local environment and reproducing the results. TrafficLLM, a novel traffic analysis attack that leverages GPT-2, a popular LLM, to enhance feature extraction, thereby improving
 the open-set performance of downstream classification. We use five existing encrypted traffic datasets to show how the feature extraction by GPT-2 improves the open-set performance of traffic
 analysis attacks. As the open-set classification methods, we use K-LND, OpenMax, and Backgroundclass methods, and shows that K-LND methods have higher performance overall.
 
@@ -23,12 +23,12 @@ analysis attacks. As the open-set classification methods, we use K-LND, OpenMax,
 - OpenMax
 - Background class
 
-# Using TrafficGPT
+# Using TrafficLLM
 
 First, clone the git repo and install the requirements.
 ```
-git clone https://github.com/YasodGinige/TrafficGPT.git
-cd TrafficGPT
+git clone https://github.com/YasodGinige/TrafficLLM.git
+cd TrafficLLM
 pip install -r requirements.txt
 ```
 Next, download the dataset and place it in the data directory.
@@ -61,6 +61,8 @@ python3 evaluate.py --max_len 1024 --batch_size 12 --epochs 3 --num_labels 12 --
 python3 evaluate.py --max_len 1024 --batch_size 12 --epochs 5 --num_labels 75 --K_number 20 --TH_value 0.8 --dataset CSTNe
 ```
 
+You can find the fine-tuned models [here](https://drive.google.com/drive/folders/1aln2WG_XrRzPZUym44uPew7-b8stL9T-?usp=sharing).
+
 ### LLaMA Fine-tuning
 
 To fine-tune the LLaMA model and obtain results, run the following commands accordingly.
@@ -83,11 +85,5 @@ Attention plots of GPT-2 and ET-BERT models for AWF and IoT traffic traces are g
 # Citations
 If you are using this work for academic purposes, please cite our [paper](https://dl.acm.org/doi/abs/10.1145/3674213.3674217).
 ```
-@inproceedings{ginige2024trafficgpt,
-  title={TrafficGPT: An LLM Approach for Open-Set Encrypted Traffic Classification},
-  author={Ginige, Yasod and Dahanayaka, Thilini and Seneviratne, Suranga},
-  booktitle={Proceedings of the Asian Internet Engineering Conference 2024},
-  pages={26--35},
-  year={2024}
-}
+citation here
 ```
