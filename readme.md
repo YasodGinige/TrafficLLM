@@ -5,7 +5,7 @@
 
 **Note:**
 - ⭐ **Please leave a <font color='orange'>STAR</font> if you like this project!** ⭐
-- If you are using this work for academic purposes, please cite our [paper](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5074974).
+- If you are using this work for academic purposes, please cite our [paper](https://www.sciencedirect.com/science/article/pii/S1389128625008138).
 - If you find any <font color='red'>incorrect</font> / <font color='red'>inappropriate</font> / <font color='red'>outdated</font> content, please kindly consider opening an issue or a PR.
 
 <div align="center">
@@ -85,9 +85,12 @@ Attention plots of GPT-2 and ET-BERT models for AWF and IoT traffic traces are g
 # Citations
 If you are using this work for academic purposes, please cite our [paper]([https://dl.acm.org/doi/abs/10.1145/3674213.3674217](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5074974)).
 ```
-@article{ginige5074974trafficllm,
-  title={Trafficllm: Llms for Improved Open-Set Encrypted Traffic Analysis},
+@article{ginige2025trafficllm,
+  title={Trafficllm: Llms for improved open-set encrypted traffic analysis},
   author={Ginige, Yasod and Silva, Bhanuka and Dahanayaka, Thilini and Seneviratne, Suranga},
-  journal={Available at SSRN 5074974}
+  journal={Computer Networks},
+  pages={111847},
+  year={2025},
+  publisher={Elsevier}
 }
 ```
